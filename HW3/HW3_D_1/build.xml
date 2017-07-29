@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="HW3_Design_1" default="test" basedir=".">
+
+
+<property name="src" location="src/"/>
+<property name="bin" location="bin/"/>
+
+
+<path id="project.classpath">
+    <pathelement location="bin"/>
+</path>
+
+
+<target name="init" depends="clean">
+    <mkdir dir="${bin}"/>
+</target>
+
+
+<target name="clean">
+    <delete dir="${bin}"/>
+</target>
+
+
+<target name="build" depends="init">
+    <echo message="${ant.project.name}: ${ant.file}"/>
+    
+    <javac srcdir="${src}" destdir="${bin}" debug="on" includeantruntime="false">
+    <classpath refid="project.classpath"/>
+    </javac>
+</target>
+
+
+<target name="test" depends="build">
+    <java fork="true" classname="hw3_d_1.Student" failonerror="true" dir="${basedir}">
+        <classpath refid="project.classpath"/>
+    </java>
+</target>
+
+
+</project>

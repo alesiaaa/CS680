@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CS680: HW5" basedir="." default="test" >
+	<description>HW5: Running Junit tests on Polygon subclasses (HW2)</description>
+	
+	<property environment="env"/>
+	<property name="src" location="src/edu/umb/cs/cs680"/>
+	<property name="bin" location="bin"/>
+	<property name="test.src" location="test/src/edu/umb/cs/cs680"/>
+	<property name="test.bin" location="test/bin"/>
+	
+	<path id="external.classpath">
+		<fileset dir="${env.ECLIPSE_HOME}/plugins" includes="**/*.jar">
+			<exclude name="**/*ant*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="test.classpath">
+		<path refid="external.classpath"/>
+		<pathelement location="${bin}"/>
+		<pathelement location="${test.bin}"/>
+	</path>
+	
+	<target name="check">
+		<echo message="ANT_HOME is set to = ${env.ANT_HOME}"/>
+		<echo message="ECLIPSE_HOME is set to = ${env.ECLIPSE_HOME}"/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${bin}"/>
+		<delete dir="${test.bin}"/>
+	</target>
+	
+	<target name="init" depends="clean">
+		<mkdir dir="${bin}"/>
+		<mkdir dir="${test.bin}"/>
+	</target>
+	
+  	<target name="build" depends="init">
+	    <echo message="Begin compile for source files" /> 
+	    <javac destdir="${bin}" srcdir="${src}" includeantruntime="false" debug="on">
+	    	<classpath refid="external.classpath"/>
+	    </javac>
+  		<echo message="Compile completed" />
+  		
+  	</target>
+	
+	<target name="main">
+	  	<echo message="Start of main" /> 
+	  	<java classpath="${bin}" classname="edu.umb.cs.cs680.Triangle"/>
+	  	<echo message="End of main" /> 
+	</target>
+	
+	<target name="build_test">
+		<echo message="Begin compile for test files" />
+		<javac destdir="${test.bin}" srcdir="${test.src}" includeantruntime="false" debug="on">
+			<classpath refid="test.classpath"/>	
+		</javac>
+		<echo message="Compile completed" />
+	</target>
+	
+  	
+	
+	<target name="test" depends="build, build_test, main">
+		<echo message="Begin tests for ${ant.project.name}" />
+		
+		<junit printsummary="yes" haltonfailure="yes">
+	  	
+			<classpath refid="test.classpath"/>
+			
+			<formatter type="plain" usefile="false"/>
+			
+			<batchtest fork="yes">
+				
+				<fileset dir="${test.bin}">
+					<include name="**/*Test*.class"/> 
+				</fileset>
+				
+			</batchtest>
+	  	
+		</junit>
+		<echo message="Tests completed!" /> 	
+	 </target>
+	
+	
+</project>
